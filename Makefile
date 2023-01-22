@@ -15,8 +15,8 @@ default:
 	\gexec
 	EOF
 	curl -s -H 'Content-type: application/json' --data-binary @config.json "http://127.0.0.1:8080/v1/metadata" | jq -r '.'
-	seq 10 | xargs -I{} curl -s -H 'Content-type: application/json' --data '{"type": "pg_track_table", "args": {"source": "default", "table":"test_{}"}}' "http://127.0.0.1:8080/v1/metadata" | jq -r '.'
-	seq 10 | xargs -I{} curl -s -H 'Content-type: application/json' --data '{"query":{"query": "{test_{} {name}}"}}' "http://127.0.0.1:8080/v1/graphql/explain" | jq -r '.[]|.sql|"\(.);"' > test.sql
+	seq 10 | xargs -I{} curl -s -H 'Content-type: application/json' --data '{"type":"pg_track_table","args":{"source":"default","table":"test_{}"}}' "http://127.0.0.1:8080/v1/metadata" | jq -r '.'
+	seq 10 | xargs -I{} curl -s -H 'Content-type: application/json' --data '{"query":{"query":"{test_{} {name}}"}}' "http://127.0.0.1:8080/v1/graphql/explain" | jq -r '.[]|.sql|"\(.);"' > test.sql
 	pgbench -n -T10 -j10 -c10 -Msimple -f test.sql >> pgbench.log
 	pgbench -n -T10 -j10 -c10 -Mextended -f test.sql >> pgbench.log
 	pgbench -n -T10 -j10 -c10 -Mprepared -f test.sql >> pgbench.log
