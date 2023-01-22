@@ -3,7 +3,7 @@ SHELL=bash
 .ONESHELL:
 .PHONY: default
 
-N=10
+N:=10
 
 default:
 	docker run -d --net=host -e HASURA_GRAPHQL_DATABASE_URL=postgres://$${PGUSER}:$${PGPASSWORD}@$${PGHOST}:$${PGPORT}/$${PGDATABASE} -e HASURA_GRAPHQL_ENABLE_CONSOLE=true hasura/graphql-engine:latest
