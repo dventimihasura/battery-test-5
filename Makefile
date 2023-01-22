@@ -20,4 +20,5 @@ default:
 	pgbench -n -T10 -j10 -c10 -Msimple -f test.sql >> pgbench.log
 	pgbench -n -T10 -j10 -c10 -Mextended -f test.sql >> pgbench.log
 	pgbench -n -T10 -j10 -c10 -Mprepared -f test.sql >> pgbench.log
+	k6 run -u 50 test.js --summary-export k6.log
 	docker ps -aq | xargs docker rm -f
