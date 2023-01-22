@@ -1,9 +1,9 @@
 SHELL=bash
 
+N:=10
+
 .ONESHELL:
 .PHONY: default
-
-N:=10
 
 default:
 	docker run -d --net=host -e HASURA_GRAPHQL_DATABASE_URL=postgres://$${PGUSER}:$${PGPASSWORD}@$${PGHOST}:$${PGPORT}/$${PGDATABASE} -e HASURA_GRAPHQL_ENABLE_CONSOLE=true hasura/graphql-engine:latest
@@ -20,5 +20,5 @@ default:
 	pgbench -n -T10 -j10 -c10 -Msimple -f test.sql >> pgbench.log
 	pgbench -n -T10 -j10 -c10 -Mextended -f test.sql >> pgbench.log
 	pgbench -n -T10 -j10 -c10 -Mprepared -f test.sql >> pgbench.log
-	k6 run -u 50 test.js --summary-export k6.log
+	k6 run -u50 -d10s test.js --summary-export k6.log
 	docker ps -aq | xargs docker rm -f
